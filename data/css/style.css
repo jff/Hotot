@@ -984,6 +984,10 @@ label {
 	background-position-x: -96px;
 	display: none;
 }
+.remove_from_list_btn {
+	background-position-x: -96px;
+	display: inline-block;
+}
 .card[following="true"] .follow_btn {
 	display: none !important;
 }

@@ -202,7 +202,7 @@ search_t:
 </li>',
 
 people_t:
-'<li id="{%USER_ID%}" class="people_card card normal" type="people" following={%FOLLOWING%} screen_name={%SCREEN_NAME%} style="font-family: {%TWEET_FONT%};">\
+'<li id="{%USER_ID%}" class="people_card card normal" type="people" following={%FOLLOWING%} screen_name={%SCREEN_NAME%} style="font-family: {%TWEET_FONT%};" list_owner={%LIST_OWNER%} slug={%SLUG%}>\
     <div class="tweet_active_indicator"></div>\
     <div class="tweet_selected_indicator"></div>\
     <div class="profile_img_wrapper" title="{%USER_NAME%}" style="background-image: url({%PROFILE_IMG%})">\
@@ -210,6 +210,8 @@ people_t:
     <ul class="tweet_bar">\
         <li style="display:none;">\
         <a class="tweet_bar_btn add_to_list_btn" title="Add to list" href="#follow" data-i18n-title="add_to_list"></a>\
+        </li><li type="list" slug="{%SLUG%}">\
+        <a class="tweet_bar_btn remove_from_list_btn" title="Remove from list" href="#remove_from_list" data-i18n-title="remove_from_list"></a>\
         </li><li>\
         <a class="tweet_bar_btn follow_btn" title="Follow them" href="#follow" data-i18n-title="follow"></a>\
         </li><li>\
@@ -366,7 +368,9 @@ list_t:
     <ul class="tweet_bar">\
         <li>\
         <a class="tweet_bar_btn follow_btn" title="Follow them" href="#follow" data-i18n-title="follow"></a>\
+        <a class="tweet_bar_btn follow_btn" title="Follow them" href="#follow" data-i18n-title="follow"></a>\
         </li><li>\
+        <a class="tweet_bar_btn unfollow_btn" title="Unfollow them" href="#unfollow" data-i18n-title="unfollow"></a>\
         <a class="tweet_bar_btn unfollow_btn" title="Unfollow them" href="#unfollow" data-i18n-title="unfollow"></a>\
         </li>\
     </ul>\
@@ -674,6 +678,7 @@ function init() {
           USER_ID:'', SCREEN_NAME:'', USER_NAME:'', DESCRIPTION:''
         , PROFILE_IMG:'', FOLLOWING:'', TWEET_FONT_SIZE:'', TWEET_FONT:''
         , TWEET_LINE_HEIGHT:''
+        , LIST_OWNER:'', SLUG:'' // JFF: valid in the context of list displays
     };
 
     ui.Template.list_m = {
@@ -1038,6 +1043,16 @@ function form_search(tweet_obj, pagename) {
 form_people:
 function form_people(user_obj, pagename) {
     var m = ui.Template.people_m;
+    
+    // JFF: If I am displaying a list of people in the context of a list,
+    //      then pagename is of the form list_{list_owner}_{list_name}
+    var _page = pagename.split('_');
+    //console.log("***" + list_owner + "***" + slug);
+    if(_page[0]==="list") {
+        m.LIST_OWNER = _page[1];
+        m.SLUG = _page[2];
+    }
+
     m.USER_ID = pagename + '-' + user_obj.id_str;
     m.SCREEN_NAME = user_obj.screen_name;
     m.USER_NAME = user_obj.name;
@@ -1052,7 +1067,7 @@ function form_people(user_obj, pagename) {
 },
 
 form_list:
-function form_people(list_obj, pagename) {
+function form_list(list_obj, pagename) {
     var m = ui.Template.list_m;
     m.LIST_ID = pagename + '-' + list_obj.id_str;
     m.SCREEN_NAME = list_obj.user.screen_name;

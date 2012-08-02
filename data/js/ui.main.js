@@ -698,6 +698,10 @@ function bind_tweet_action(id) {
     function (event) {
         ui.Main.on_unfollow_btn_click(this, ui.Main.active_tweet_id, event);
     });
+    $(id).find('.remove_from_list_btn').click(
+    function (event) {
+        ui.Main.on_remove_from_list_btn_click(this, ui.Main.active_tweet_id, ui.Main.me, event);
+    });
 },
 
 bind_tweet_text_action:
@@ -914,6 +918,22 @@ function on_follow_btn_click(btn, li_id, event) {
             li.attr('following', 'true').addClass('following');
         });
     }
+},
+
+on_remove_from_list_btn_click:
+function on_remove_from_list_btn_click(btn, li_id, main_me, event) {
+    var li = $(li_id);
+    var screen_name = li.attr('screen_name');
+    var slug = li.attr('slug');
+    var list_owner = li.attr('list_owner');
+    toast.set(_('unfollow_at') + screen_name + ' '+ _('dots')).show();
+    globals.twitterClient.destroy_list_member(list_owner,slug,screen_name,
+        function () {
+            toast.set(
+                _('unfollow_at') + screen_name+ ' '+ _('successfully')).show();
+            li.attr('following', 'false').removeClass('following');
+            li.hide(); //JFF TODO: hide after x seconds to allow undo?
+    });
 },
 
 on_unfollow_btn_click:
