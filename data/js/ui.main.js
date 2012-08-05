@@ -757,7 +757,9 @@ function on_reply_click(btn, li_id, event) {
     }
     ui.StatusBox.open(
     function() {
-        ui.StatusBox.move_cursor(ui.StatusBox.POS_END);
+        //ui.StatusBox.move_cursor(ui.StatusBox.POS_END);
+        //JFF: Position the cursor after the first name
+        ui.StatusBox.move_cursor(ui.StatusBox.pos_second_at());
         ui.StatusBox.change_mode(ui.StatusBox.MODE_REPLY);
     });
 },
@@ -769,7 +771,7 @@ function on_rt_click(btn, li_id, event) {
     var _text = $(li.find('.text')[0]);
     var text = _text.attr('alt') || _text.text();
 
-    ui.StatusBox.set_status_text(" RT @" + screen_name
+    ui.StatusBox.set_status_text("RT @" + screen_name
         + ': ' + text + ' ');
     ui.StatusBox.open(
     function() {
@@ -831,7 +833,9 @@ function on_reply_all_click(btn, li_id, event) {
     }
     ui.StatusBox.open(
     function() {
-        ui.StatusBox.move_cursor(ui.StatusBox.POS_END);
+        //ui.StatusBox.move_cursor(ui.StatusBox.POS_END);
+        //JFF: Position the cursor after the first name
+        ui.StatusBox.move_cursor(ui.StatusBox.pos_second_at());
         ui.StatusBox.change_mode(ui.StatusBox.MODE_REPLY);
     });
 

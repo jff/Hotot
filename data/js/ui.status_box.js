@@ -577,8 +577,15 @@ function move_cursor(pos) {
         range.moveStart('character', pos);
         range.select();
     }
-}
+},
 
+pos_second_at:
+function pos_second_at() {
+    var text = $('#tbox_status').attr('value');
+    var n = text.slice(1).indexOf('@'); // position of second @ in the status box (not counting the first @); if there's no second @, it returns -1
+    if(n>0) n = n+1; // to compensate for the sliced '@'
+    return n;
+}
 };
 
 
